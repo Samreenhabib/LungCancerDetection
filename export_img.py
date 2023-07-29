@@ -4,9 +4,9 @@ import cv2
 import numpy as np
 
 # Specify the .dcm folder path
-folder_path = "dicom"
+folder_path = "matched_dicom"
 # Specify the output jpg/png folder path
-jpg_folder_path = "Data"
+jpg_folder_path = "images"
 # make it True if you want in PNG format
 PNG = False
 
@@ -27,8 +27,8 @@ for n, image_filename in enumerate(images_path):
     
     # Apply windowing if present
     if 'WindowCenter' in ds and 'WindowWidth' in ds:
-        window_center = ds.WindowCenter
-        window_width = ds.WindowWidth
+        window_center = np.mean(ds.WindowCenter)
+        window_width = np.mean(ds.WindowWidth)
         window_min = window_center - (window_width / 2)
         window_max = window_center + (window_width / 2)
         pixel_array_numpy = np.clip(pixel_array_numpy, window_min, window_max)
@@ -48,3 +48,4 @@ for n, image_filename in enumerate(images_path):
     
     if n % 50 == 0:
         print('{} image converted'.format(n))
+
